@@ -8,7 +8,7 @@ VALIDATION_FILE = "validation.json"
 TRAINING_FILE = "train.json"
 class NeuralNetwork
 	attr_accessor :sizes, :biases, :weights
-	
+
 	def initialize(sizes)
 		@sizes = sizes
 		@biases = sizes[1..-1].map{|neus| neus.times.map {Distribution::Normal.rng(0).call}}
@@ -27,6 +27,15 @@ class NeuralNetwork
 		vote(input).each_with_index.max[1]
 	end
 
+	def learn(training_data, epochs, mini_batch_size, rate, test_data=nil)
+	end
+
+	def learn_with(mini_batch, rate)
+	end
+
+	def back_prop(input, answer)
+	end
+
 end
 
 def load_json(filename)
@@ -37,7 +46,11 @@ def evaluate
 end
 
 def dot(v0,v1)
-	v0.zip(v1).map{|v| v[0]*v[1]}.inject(:+)
+	hadamard_product(v0,v1).inject(:+)
+end
+
+def hadamard_product(v0,v1)
+	v0.zip(v1).map{|v| v0*v1}
 end
 
 def v_add(v0,v1)
