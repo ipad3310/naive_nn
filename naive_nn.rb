@@ -34,6 +34,7 @@ class NeuralNetwork
 	end
 
 	def back_prop(input, answer)
+
 	end
 
 end
@@ -42,7 +43,13 @@ def load_json(filename)
 	JSON.parse(Zip::File.open("#{filename}.zip").read(filename))
 end
 
-def evaluate
+def _evaluate(data_row, net)
+	data_row["answer"].each_with_index.max[1] == net.output(data_row["feature"]) ? 1 : 0
+end
+
+def evaluate(data, net)
+	results = data.map{|data_row| _evaluate(data_row, net)}
+	results.inject(:+)/results.length.to_f
 end
 
 def dot(v0,v1)
@@ -50,7 +57,7 @@ def dot(v0,v1)
 end
 
 def hadamard_product(v0,v1)
-	v0.zip(v1).map{|v| v0*v1}
+	v0.zip(v1).map{|v| v[0]*v[1]}
 end
 
 def v_add(v0,v1)
