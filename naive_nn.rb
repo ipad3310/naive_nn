@@ -29,6 +29,8 @@ class NeuralNetwork
 		current.map{|z| sigmoid(z)}
 	end
 
+
+
 	def vote(input)
 		current = input
 		@weights.length.times do |i|
@@ -45,11 +47,26 @@ class NeuralNetwork
 	def learn(training_data, epochs, mini_batch_size, rate, test_data=nil)
 	end
 
-	def learn_with(mini_batch, rate)
+	def learn_with(data, rate)
+
+	end
+
+	def forward(input)
+		acs = []
+		zs = []
+		current_a = input
+		acs.push(input)
+		@weights.length.times do |i|
+			current_z = next_layer_z(@weights[i], @biases[i], current_a)
+			zs.push(current_z)
+			current_a = sigmoid_layer(current_z)
+			acs.push(current_a)
+		end
+		[acs, zs]
 	end
 
 	def back_prop(input, answer)
-
+		activations, zs = forward(input)
 	end
 
 	def _z
