@@ -15,10 +15,25 @@ class NeuralNetwork
 		@weights = sizes.each_cons(2).map{|i| Array.new(i[1],i[0].times.map {Distribution::Normal.rng(0).call})}
 	end
 
+	def next_layer(previous_weights, previous_biases, current)
+		#previous_weights.zip(previous_biases).map{|w_b| sigmoid(dot(w_b[0],current)+w_b[1])}
+		z = next_layer_z(previous_weights, previous_biases, current)
+		sigmoid_layer(z)
+	end
+
+	def next_layer_z(previous_weights, previous_biases, current)
+		previous_weights.zip(previous_biases).map{|w_b| dot(w_b[0],current)+w_b[1]}
+	end
+
+	def sigmoid_layer(current)
+		current.map{|z| sigmoid(z)}
+	end
+
 	def vote(input)
 		current = input
 		@weights.length.times do |i|
-			current = @weights[i].zip(@biases[i]).map{|w_b| sigmoid(dot(w_b[0],current)+w_b[1])}
+			current = next_layer(@weights[i], @biases[i], current)
+			#current = @weights[i].zip(@biases[i]).map{|w_b| sigmoid(dot(w_b[0],current)+w_b[1])}
 		end
 		current
 	end
@@ -35,6 +50,9 @@ class NeuralNetwork
 
 	def back_prop(input, answer)
 
+	end
+
+	def _z
 	end
 
 end
